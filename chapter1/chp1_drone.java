@@ -1,4 +1,4 @@
-//Author Name: Alex Porter
+//Author Name:Alex Porter
 //Date: 8/27/2020
 //Program Name: chp1_drone
 //Purpose: Create a CLI based drone application to track movements
