@@ -14,6 +14,7 @@ import org.jsoup.parser.Parser;
 
 class chp3_text_analyzer {
 
+    public static final int DISPLAY_COUNT = 20; //We want to display 20 words
     public static HashMap<String, Integer> wordCount = new HashMap<String, Integer>();
 
     public static void main(String[] args) throws IOException {
@@ -51,6 +52,7 @@ class chp3_text_analyzer {
         //So this is pretty complicated, but essentially what we're doing is taking advantage
         //of the lambda feature in java. We are "streaming" the values through a compare function
         //and then adding them to the sorted word count.
+
         HashMap<String, Integer> sortedWordCount =
         wordCount.entrySet()
                 .stream()
@@ -60,6 +62,20 @@ class chp3_text_analyzer {
                         Map.Entry::getValue,
                         (oldValue, newValue) -> oldValue, LinkedHashMap::new
                 ));
+
+        displayText(sortedWordCount);
+
+    }
+
+    public static void displayText(HashMap<String, Integer> wordCount) {
+
+        for(int i = 0; i < DISPLAY_COUNT; i++) {
+            System.out.println("[" + (i + 1) + "] Word: "
+                    +  wordCount.keySet().toArray()[i]
+                    + " was used "
+                    + wordCount.get(wordCount.keySet().toArray()[i])
+                    + " times");
+        }
 
     }
 
