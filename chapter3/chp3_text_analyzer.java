@@ -3,6 +3,9 @@
 //Program Name: chp3_text_analyzer
 //Purpose: Download play, process data, return word frequency
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -15,18 +18,61 @@ import org.jsoup.parser.Parser;
 class chp3_text_analyzer {
 
     public static final int DISPLAY_COUNT = 20; //We want to display 20 words
+    public static final boolean USE_FILE = true; //Didn't realize it had to be from a file so heres the swap
+
     public static HashMap<String, Integer> wordCount = new HashMap<String, Integer>();
 
     public static void main(String[] args) throws IOException {
 
-        //Define the URL and connect to it
-        String url = "http://shakespeare.mit.edu/macbeth/full.html";
-        Document doc = Jsoup.connect(url).get();
+        String text = "";
 
-        //Get all BlockQuote Elements and add in the <a> tag (for some reason text is stored in there)
-        String text = doc.select("blockquote").text();
-        text += doc.select("a").text();
+        if(!USE_FILE) {
+            System.out.println("Downloading text from website");
 
+            //Define the URL and connect to it
+            String url = "http://shakespeare.mit.edu/macbeth/full.html";
+            Document doc = Jsoup.connect(url).get();
+
+            //Get all BlockQuote Elements and add in the <a> tag (for some reason text is stored in there)
+            text = doc.select("blockquote").text();
+            text += doc.select("a").text();
+            System.out.println("Completed downloading text from [" + url + "]");
+        }
+        else {
+
+            File currentDirectory = new File("./chapter3");
+            File fileToRead = null;
+
+            String files = Arrays.toString(currentDirectory.listFiles(//Filter out the text files
+                    new FilenameFilter() {
+                        @Override
+                        public boolean accept(File dir, String name) {
+                            return name.endsWith(".txt");
+                        }
+                    }
+            ));
+
+            if(files.equals("null")) {
+                System.exit(1);
+            }
+
+            //Create the file
+            fileToRead = new File(
+                    files
+                            .replaceAll("]", "")
+                            .replaceAll("\\[", "")
+            );
+
+            //Create the Scanner
+            Scanner fileReader = new Scanner(fileToRead);
+            while(fileReader.hasNextLine()) {
+                text += (fileReader.nextLine() + " ");
+            }
+
+        }
+
+        //processing text
+        System.out.println("Processing text");
         processText(text);
         
     }
