@@ -10,10 +10,11 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
+//Uncomment if including Jsoup
+//import org.jsoup.Jsoup;
+//import org.jsoup.nodes.Document;
+//import org.jsoup.nodes.Element;
+//import org.jsoup.parser.Parser;
 
 class chp3_text_analyzer {
 
@@ -28,15 +29,15 @@ class chp3_text_analyzer {
 
         if(!USE_FILE) {
             System.out.println("Downloading text from website");
-
+            //======= Uncomment if including Jsoup =======
             //Define the URL and connect to it
-            String url = "http://shakespeare.mit.edu/macbeth/full.html";
-            Document doc = Jsoup.connect(url).get();
+            //String url = "http://shakespeare.mit.edu/macbeth/full.html";
+            //Document doc = Jsoup.connect(url).get();
 
             //Get all BlockQuote Elements and add in the <a> tag (for some reason text is stored in there)
-            text = doc.select("blockquote").text();
-            text += doc.select("a").text();
-            System.out.println("Completed downloading text from [" + url + "]");
+            //text = doc.select("blockquote").text();
+            //text += doc.select("a").text();
+            //System.out.println("Completed downloading text from [" + url + "]");
         }
         else {
 
@@ -62,6 +63,8 @@ class chp3_text_analyzer {
                             .replaceAll("]", "")
                             .replaceAll("\\[", "")
             );
+
+            System.out.println("Opening up file found in directory [" + fileToRead + "]");
 
             //Create the Scanner
             Scanner fileReader = new Scanner(fileToRead);
